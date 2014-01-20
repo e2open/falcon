@@ -1,8 +1,12 @@
 package com.e2open.falcon.framework.elements;
 
 import com.e2open.falcon.framework.waiters.Waiter;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public enum ElementType {
     TEXT {
@@ -10,6 +14,11 @@ public enum ElementType {
         public void setValue(WebElement element, Object value) {
             element.clear();
             element.sendKeys(value.toString());
+        }
+
+        @Override
+        public String getValue(WebElement element) {
+            return element.getAttribute("value");
         }
     }, CHECKBOX {
         @Override
@@ -33,15 +42,30 @@ public enum ElementType {
                 throw new RuntimeException("Not sure how to handle setting radio using: " + value.toString());
             }
         }
+
+        @Override
+        public String getValue(WebElement element) {
+            return element.isSelected() ? "true" : "false";
+        }
     }, RADIO {
         @Override
         public void setValue(WebElement element, Object value) {
             element.click();
         }
+
+        @Override
+        public String getValue(WebElement element) {
+            return element.isSelected() ? "true" : "false";
+        }
     }, SUBMIT {
         @Override
         public void setValue(WebElement element, Object value) {
             element.click();
+        }
+
+        @Override
+        public String getValue(WebElement element) {
+            return null;
         }
     }, PASSWORD {
         @Override
@@ -49,15 +73,30 @@ public enum ElementType {
             element.clear();
             element.sendKeys(value.toString());
         }
+
+        @Override
+        public String getValue(WebElement element) {
+            return element.getAttribute("value");
+        }
     }, LINK {
         @Override
         public void setValue(WebElement element, Object value) {
             element.click();
         }
+
+        @Override
+        public String getValue(WebElement element) {
+            return null;
+        }
     }, DIV {
         @Override
         public void setValue(WebElement element, Object value) {
             element.click();
+        }
+
+        @Override
+        public String getValue(WebElement element) {
+            return null;
         }
     }, SELECT {
         @Override
@@ -67,7 +106,26 @@ public enum ElementType {
             waiter.waitUntilSelectOptionPresent(selectList, (String) value);
             selectList.selectByVisibleText(value.toString());
         }
+
+        @Override
+        public String getValue(WebElement element) {
+            List<String> options = getValues(element);
+            return options.get(0);
+        }
+
+        public List<String> getValues(WebElement element) {
+            ArrayList<String> values = new ArrayList<String>();
+            List<WebElement> options = element.findElements(By.tagName("option"));
+            for (WebElement option : options) {
+                if (option.isSelected()) {
+                    values.add(option.getText());
+                }
+            }
+            return values;
+        }
     };
 
     public abstract void setValue(WebElement element, Object value);
+
+    public abstract String getValue(WebElement element);
 }

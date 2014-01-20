@@ -5,4 +5,5 @@ import com.e2open.falcon.framework.view.PageImpl;
 
 public interface Controller {
     public PageImpl getView();
+
 }
