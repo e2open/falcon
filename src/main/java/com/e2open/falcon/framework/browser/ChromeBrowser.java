@@ -24,9 +24,9 @@ public class ChromeBrowser extends AbstractBrowser {
 	}
 	
 	public void maximize () {
-		// Chrome does not currently support maximizing the com.e2open.falcon.framework.browser
+		// Chrome does not currently support maximizing the browser
 	}
-	
+
 	private void updateProfile () {
 		System.setProperty("webdriver.chrome.driver", FileHelper.getResourceFilePath("browser_drivers/chromedriver.exe"));
 	}

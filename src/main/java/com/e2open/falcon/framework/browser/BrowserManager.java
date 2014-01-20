@@ -9,10 +9,10 @@ public enum BrowserManager {
     INSTANCE;
 
     private Browser activeBrowser = null;
-
     public EnumMap<BrowserType, Browser> browsers = new EnumMap<BrowserType, Browser>(BrowserType.class);
 
     public void resetActiveBrowser()	{
+        browsers.remove(activeBrowser.getType());
     	activeBrowser = null;
     }
 
@@ -73,9 +73,4 @@ public enum BrowserManager {
         }
         return browserType;
     }
-
-    public void setBrowserType(BrowserType browserType) {
-        getBrowser(browserType);
-    }
-
 }

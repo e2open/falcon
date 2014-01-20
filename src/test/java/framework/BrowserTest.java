@@ -1,56 +1,57 @@
 package framework;
 
-import com.e2open.falcon.framework.browser.Browser;
 import com.e2open.falcon.framework.browser.BrowserManager;
 import com.e2open.falcon.framework.browser.BrowserType;
 import com.e2open.falcon.framework.helpers.FileHelper;
 import org.junit.After;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
 
-import static junit.framework.Assert.assertTrue;
 import static junit.framework.TestCase.assertEquals;
 
 public class BrowserTest {
 
     @After
     public void afterEach() {
-        browser().close();
+        BrowserManager.INSTANCE.browser().close();
     }
 
     @Test
     public void openDefaultBrowser() {
-        openUrl(BrowserManager.INSTANCE.getDefaultBrowserType());
+        openUrl();
     }
 
-// TODO: why does this test lose the window handle after navigation?
-//    @Test
-//    public void internetExplorer() {
-//        BrowserManager.INSTANCE.createBrowser(BrowserType.INTERNETEXPLORER);
-//        openUrl(BrowserType.INTERNETEXPLORER);
-//        browser().close();
-//        assertTrue(browser().driver().getWindowHandles().size() == 0);
-//    }
+    @Test
+    public void internetExplorer() {
+        BrowserManager.INSTANCE.createBrowser(BrowserType.INTERNETEXPLORER);
+        openUrl();
+        checkPage();
+    }
 
     @Test
     public void firefox() {
         BrowserManager.INSTANCE.createBrowser(BrowserType.FIREFOX);
-        openUrl(BrowserType.FIREFOX);
+        openUrl();
+        checkPage();
     }
 
     @Test
     public void chrome() {
         BrowserManager.INSTANCE.createBrowser(BrowserType.CHROME);
-        openUrl(BrowserType.CHROME);
+        openUrl();
+        checkPage();
     }
 
-    private void openUrl(BrowserType browserType) {
+    private void openUrl() {
         String url = FileHelper.getResourceFilePath("html/elements.html");
-        browser().driver().navigate().to(String.format("file:/%s", url));
-        assertTrue(browser().driver().getCurrentUrl().contains("elements.html"));
-        assertEquals(browser().getType(), browserType);
+        browser().get(String.format("file:/%s", url));
     }
 
-    private Browser browser() {
-        return BrowserManager.INSTANCE.browser();
+    private void checkPage() {
+        assertEquals("Falcon Element Test Page", browser().getTitle());
+    }
+
+    private WebDriver browser() {
+        return BrowserManager.INSTANCE.getDriver();
     }
 }
