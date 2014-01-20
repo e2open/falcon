@@ -44,7 +44,7 @@ public class BrowserTest {
 
     private void openUrl() {
         String url = FileHelper.getResourceFilePath("html/elements.html");
-        browser().get(String.format("file:/%s", url));
+        browser().get(String.format("file:%s", url));
     }
 
     private void checkPage() {
