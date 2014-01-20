@@ -13,11 +13,7 @@ abstract class AbstractBrowser implements Browser {
 	
 	public void close() {
 		if (webdriver != null){
-			try	{
-				webdriver.quit();
-			} catch (Exception e){
-				// ignore any exceptions
-			}
+			webdriver.quit();
 		}
 		BrowserManager.INSTANCE.resetActiveBrowser();
 	}
