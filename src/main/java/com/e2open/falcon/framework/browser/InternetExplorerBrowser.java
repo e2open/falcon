@@ -4,7 +4,6 @@ import com.e2open.falcon.framework.helpers.FileHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerDriverService;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 public class InternetExplorerBrowser extends AbstractBrowser {
 
@@ -17,17 +16,14 @@ public class InternetExplorerBrowser extends AbstractBrowser {
 
     public WebDriver driver() {
         if (webdriver == null) {
-            updateProfile();
+            getProfile();
             webdriver = new InternetExplorerDriver();
         }
         return webdriver;
     }
 
-    private void updateProfile() {
+    private void getProfile() {
         System.setProperty("webdriver.ie.driver", FileHelper.getResourceFilePath("browser_drivers/IEDriverServer.exe"));
     }
 
-    private DesiredCapabilities profile() {
-        return DesiredCapabilities.internetExplorer();
-    }
 }

@@ -18,7 +18,7 @@ public class ChromeBrowser extends AbstractBrowser {
 	public WebDriver driver() {
 		if (webdriver == null) {
 			updateProfile();
-			webdriver = new ChromeDriver(profile());
+			webdriver = new ChromeDriver(getProfile());
 		}
 		return webdriver;
 	}
@@ -31,7 +31,7 @@ public class ChromeBrowser extends AbstractBrowser {
 		System.setProperty("webdriver.chrome.driver", FileHelper.getResourceFilePath("browser_drivers/chromedriver.exe"));
 	}
 	
-	private DesiredCapabilities profile()	{
+	private DesiredCapabilities getProfile()	{
 		DesiredCapabilities profile = DesiredCapabilities.chrome();
 		ChromeOptions options = new ChromeOptions();
 		// http://peter.sh/experiments/chromium-command-line-switches/
