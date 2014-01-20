@@ -1,5 +1,6 @@
 package com.e2open.falcon.framework.browser;
 
+import com.e2open.falcon.framework.Configuration;
 import com.e2open.falcon.framework.helpers.FileHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -34,14 +35,7 @@ public class ChromeBrowser extends AbstractBrowser {
 		DesiredCapabilities profile = DesiredCapabilities.chrome();
 		ChromeOptions options = new ChromeOptions();
 		// http://peter.sh/experiments/chromium-command-line-switches/
-		options.addArguments(
-				"no-default-com.e2open.falcon.framework.browser-check",
-				"no-first-run",
-				"safebrowsing-disable-auto-update",
-				"download.prompt_for_download=false",
-				"autofill-enabled=false",
-				"password-manager-enabled=false"
-				);
+		options.addArguments(Configuration.INSTANCE.getProperty("chrome.properties").split("\\s*,\\s*"));
 		profile.setCapability(ChromeOptions.CAPABILITY, options);
 		profile.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 		return profile;
