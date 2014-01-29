@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public abstract class Model {
     @AutoPopulateOff
-    public static final String testRunUUID = initializeUUID();
+    private static final String testRunUUID = initializeUUID();
 
     @AutoPopulateOff
     private String instanceUUID = null;
@@ -22,15 +22,11 @@ public abstract class Model {
 
     public Model() {
         instanceUUID = initializeUUID();
-        uidStrategy = getDefaultStrategy();
-    }
-
-    private UIDStrategy getDefaultStrategy() {
         String defaultStrategy = Configuration.INSTANCE.getProperty("model.default.uuid.strategy");
         if (defaultStrategy != null) {
-            return UIDStrategy.valueOf(defaultStrategy.toUpperCase());
+            uidStrategy = UIDStrategy.valueOf(defaultStrategy.toUpperCase());
         } else {
-            return UIDStrategy.NONE;
+            uidStrategy = UIDStrategy.NONE;
         }
     }
 
@@ -48,7 +44,7 @@ public abstract class Model {
     }
 
     public String getUUID() {
-        if (uidStrategy == null) uidStrategy = getDefaultStrategy();
+        if (uidStrategy == null) uidStrategy = UIDStrategy.NONE;
         if (uidStrategy == UIDStrategy.NONE) {
             return null;
         } else if (uidStrategy == UIDStrategy.BY_TEST_RUN) {
@@ -61,14 +57,9 @@ public abstract class Model {
     }
 
     protected String getUniqueValue(String value) {
-        if (StringUtils.isBlank(value)) return null;
-        if (uidStrategy == null) uidStrategy = getDefaultStrategy();
+        if (uidStrategy == null) uidStrategy = UIDStrategy.NONE;
         String uuid = getUUID();
-        if (uuid == null || value.endsWith(uuid)) {
-            return value;
-        } else {
-            return value + getUUID();
-        }
+        return (uuid == null) ? value : value + getUUID();
     }
 
     private static String initializeUUID() {
@@ -77,6 +68,7 @@ public abstract class Model {
             return uuid;
         } else {
             uuid = Long.toString(UUID.randomUUID().getMostSignificantBits());
+            System.out.println(String.format("UUID Created %s for class", uuid));
             return uuid;
         }
     }
