@@ -1,4 +1,4 @@
-package framework;
+package com.e2open.falcon;
 
 import com.e2open.falcon.framework.browser.BrowserManager;
 import com.e2open.falcon.framework.browser.BrowserType;
