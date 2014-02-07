@@ -3,14 +3,20 @@ package com.e2open.falcon.framework.model;
 import com.e2open.falcon.framework.Configuration;
 import com.e2open.falcon.framework.annotations.AutoPopulateOff;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class Model {
+    private static final Logger log = Logger.getLogger(Model.class);
+    private static List<String> userNotifiedOfUUID = new ArrayList<String>();
+
     @AutoPopulateOff
-    private static final String testRunUUID = initializeUUID();
+    public static final String testRunUUID = getNewUUID();
 
     @AutoPopulateOff
     private String instanceUUID = null;
@@ -21,17 +27,21 @@ public abstract class Model {
     public enum UIDStrategy {NONE, BY_TEST_RUN, BY_CLASS_INSTANCE}
 
     public Model() {
-        instanceUUID = initializeUUID();
+        instanceUUID = getNewUUID();
+        uidStrategy = getDefaultStrategy();
+    }
+
+    private UIDStrategy getDefaultStrategy() {
         String defaultStrategy = Configuration.INSTANCE.getProperty("model.default.uuid.strategy");
         if (defaultStrategy != null) {
-            uidStrategy = UIDStrategy.valueOf(defaultStrategy.toUpperCase());
+            return UIDStrategy.valueOf(defaultStrategy.toUpperCase());
         } else {
-            uidStrategy = UIDStrategy.NONE;
+            return UIDStrategy.NONE;
         }
     }
 
     public Model(UIDStrategy uidStrategy) {
-        instanceUUID = initializeUUID();
+        instanceUUID = getNewUUID();
         this.uidStrategy = uidStrategy;
     }
 
@@ -44,31 +54,58 @@ public abstract class Model {
     }
 
     public String getUUID() {
-        if (uidStrategy == null) uidStrategy = UIDStrategy.NONE;
+        if (uidStrategy == null) uidStrategy = getDefaultStrategy();
         if (uidStrategy == UIDStrategy.NONE) {
             return null;
         } else if (uidStrategy == UIDStrategy.BY_TEST_RUN) {
+            logUUID(testRunUUID);
             return testRunUUID;
         } else if (uidStrategy == UIDStrategy.BY_CLASS_INSTANCE) {
+            logUUID(instanceUUID);
             return instanceUUID;
         } else {
             throw new RuntimeException("Unknown strategy: " + uidStrategy.toString());
         }
     }
 
-    protected String getUniqueValue(String value) {
-        if (uidStrategy == null) uidStrategy = UIDStrategy.NONE;
-        String uuid = getUUID();
-        return (uuid == null) ? value : value + getUUID();
+    private void logUUID(String uid) {
+        if (!userNotifiedOfUUID.contains(uid)) {
+            switch (uidStrategy) {
+                case NONE:
+                    break;
+                case BY_TEST_RUN:
+                    if (!userNotifiedOfUUID.contains(uid)) {
+                        log.info(String.format("UUID Created %s for test run", instanceUUID));
+                        userNotifiedOfUUID.add(uid);
+                    }
+                    break;
+                case BY_CLASS_INSTANCE:
+                    if (!userNotifiedOfUUID.contains(uid)) {
+                        log.info(String.format("UUID Created %s for class instance of %s", instanceUUID, getClass().getName()));
+                        userNotifiedOfUUID.add(uid);
+                    }
+                    break;
+            }
+        }
     }
 
-    private static String initializeUUID() {
+    protected String getUniqueValue(String value) {
+        if (StringUtils.isBlank(value)) return null;
+        if (uidStrategy == null) uidStrategy = getDefaultStrategy();
+        String uuid = getUUID();
+        if (uuid == null || value.endsWith(uuid)) {
+            return value;
+        } else {
+            return value + getUUID();
+        }
+    }
+
+    private static String getNewUUID() {
         String uuid = Configuration.INSTANCE.getProperty("model.uuid");
         if (StringUtils.isNotBlank(uuid)) {
             return uuid;
         } else {
             uuid = Long.toString(UUID.randomUUID().getMostSignificantBits());
-            System.out.println(String.format("UUID Created %s for class", uuid));
             return uuid;
         }
     }
