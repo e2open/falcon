@@ -21,8 +21,4 @@ abstract class AbstractBrowser implements Browser {
 	public BrowserType getType() {
 		return type;
 	}
-	
-    public void maximize() {
-    	webdriver.manage().window().maximize();
-    }
 }
