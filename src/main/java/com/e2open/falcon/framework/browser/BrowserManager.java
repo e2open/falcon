@@ -11,65 +11,54 @@ public enum BrowserManager {
     private Browser activeBrowser = null;
     public EnumMap<BrowserType, Browser> browsers = new EnumMap<BrowserType, Browser>(BrowserType.class);
 
-    public void resetActiveBrowser()	{
-        browsers.remove(activeBrowser.getType());
-    	activeBrowser = null;
+    public BrowserType getBrowserType() {
+        return browser().getType();
     }
 
-    public Browser browser () {
+    public WebDriver getDriver() {
+        return browser().driver();
+    }
+
+    public Browser browser() {
         if (activeBrowser == null) {
-            getDefaultBrowser();
+            activeBrowser = createBrowser(getDefaultBrowserType());
         }
         return activeBrowser;
     }
 
-    public BrowserType getBrowserType () {
-        return browser().getType();
-    }
-
-    public WebDriver getDriver () {
-        return browser().driver();
-    }
-
-    public WebDriver getBrowser(BrowserType browserType) {
-        Browser browser = browsers.get(browserType);
-        if (browser != null) {
-            return setActiveBrowser(browser);
-        } else {
-            return createBrowser(browserType);
+    public Browser browser(BrowserType browserType) {
+        if (activeBrowser == null) {
+            activeBrowser = createBrowser(browserType);
         }
+        return activeBrowser;
     }
 
-    public WebDriver getDefaultBrowser () {
-        return getBrowser(getDefaultBrowserType());
+    protected void resetActiveBrowser() {
+        browsers.remove(activeBrowser.getType());
+        activeBrowser = null;
     }
 
-
-    public WebDriver createBrowser(BrowserType browserType) {
+    private Browser createBrowser(BrowserType browserType) {
+        if (browsers.containsKey(browserType)) return browsers.get(browserType);
         Browser newBrowser = browserType.create_browser();
-        return setActiveBrowser(newBrowser);
+        cacheBrowser(newBrowser);
+        return newBrowser;
     }
 
-    private WebDriver setActiveBrowser(Browser browser) {
-        activeBrowser = browser;
-        return addBrowser(browser);
-    }
-
-    private WebDriver addBrowser(Browser browser) {
+    private void cacheBrowser(Browser browser) {
         BrowserType browserType = browser.getType();
         if (browsers.get(browserType) == null) {
             browsers.put(browserType, browser);
         }
-        return getDriver();
     }
 
     public BrowserType getDefaultBrowserType() {
-        String browserName = Configuration.getProperty("browser.type");
+        String browserName = Configuration.getProperty("browser");
         BrowserType browserType;
-        if(browserName != null) {
-            browserType =  BrowserType.valueOf(browserName.toUpperCase());
+        if (browserName != null) {
+            browserType = BrowserType.valueOf(browserName.toUpperCase());
         } else {
-            browserType =  BrowserType.FIREFOX;
+            browserType = BrowserType.FIREFOX;
         }
         return browserType;
     }

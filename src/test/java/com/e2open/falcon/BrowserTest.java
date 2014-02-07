@@ -1,5 +1,7 @@
 package com.e2open.falcon;
 
+import com.e2open.falcon.framework.Configuration;
+import com.e2open.falcon.framework.browser.Browser;
 import com.e2open.falcon.framework.browser.BrowserManager;
 import com.e2open.falcon.framework.browser.BrowserType;
 import com.e2open.falcon.framework.helpers.FileHelper;
@@ -23,24 +25,44 @@ public class BrowserTest {
 
     @Test
     public void internetExplorer() {
-        BrowserManager.INSTANCE.createBrowser(BrowserType.INTERNETEXPLORER);
+        BrowserManager.INSTANCE.browser(BrowserType.INTERNETEXPLORER);
         openUrl();
         checkPage();
     }
 
     @Test
     public void firefox() {
-        BrowserManager.INSTANCE.createBrowser(BrowserType.FIREFOX);
+        BrowserManager.INSTANCE.browser(BrowserType.FIREFOX);
         openUrl();
         checkPage();
     }
 
     @Test
     public void chrome() {
-        BrowserManager.INSTANCE.createBrowser(BrowserType.CHROME);
+        BrowserManager.INSTANCE.browser(BrowserType.CHROME);
         openUrl();
         checkPage();
     }
+
+    @Test
+    public void default_browser_equals_configuration_setting() {
+        Configuration.removeProperty("browser");
+        assertEquals(BrowserType.FIREFOX, BrowserManager.INSTANCE.getBrowserType());
+    }
+
+    @Test
+    public void configuration_setting_used() {
+        Configuration.setProperty("browser", "chrome");
+        assertEquals(BrowserType.CHROME, BrowserManager.INSTANCE.getBrowserType());
+    }
+
+    @Test
+    public void browser_reuse() {
+        Configuration.removeProperty("browser");
+        Browser driver = BrowserManager.INSTANCE.browser();
+        assertEquals(driver, BrowserManager.INSTANCE.browser());
+    }
+
 
     private void openUrl() {
         String url = FileHelper.getResourceFilePath("html/elements.html");

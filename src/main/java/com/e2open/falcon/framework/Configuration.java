@@ -31,6 +31,14 @@ public final class Configuration {
         return properties.getProperty(key);
     }
 
+    public static void setProperty(String key, String value) {
+        properties.setProperty(key, value);
+    }
+
+    public static void removeProperty(String key) {
+        properties.remove(key);
+    }
+
     private static void showConfiguration() {
         log.info("===================================================================================");
         for (String property : properties.stringPropertyNames()) {
