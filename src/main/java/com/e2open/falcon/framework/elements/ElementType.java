@@ -45,7 +45,7 @@ public enum ElementType {
 
         @Override
         public String getValue(WebElement element) {
-            return element.isSelected() ? "true" : "false";
+            return element.isSelected();
         }
     }, RADIO {
         @Override
@@ -55,7 +55,7 @@ public enum ElementType {
 
         @Override
         public String getValue(WebElement element) {
-            return element.isSelected() ? "true" : "false";
+            return element.isSelected();
         }
     }, SUBMIT {
         @Override
