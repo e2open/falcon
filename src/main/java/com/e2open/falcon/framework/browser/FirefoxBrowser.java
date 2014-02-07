@@ -22,7 +22,7 @@ public class FirefoxBrowser extends AbstractBrowser {
 
     private FirefoxProfile getProfile() {
         FirefoxProfile profile = new FirefoxProfile();
-        String[] options = Configuration.INSTANCE.getProperty("firefox.properties").split("\\s*,\\s*");
+        String[] options = Configuration.getProperty("firefox.properties").split("\\s*,\\s*");
         for (String option : options) {
             String lineRegex = "([^=]+)=(.+)$";
             Pattern p = Pattern.compile(lineRegex);

@@ -31,7 +31,7 @@ public class InternetExplorerBrowser extends AbstractBrowser {
 
     private DesiredCapabilities getProfile() {
         DesiredCapabilities profile = DesiredCapabilities.internetExplorer();
-        String[] options = Configuration.INSTANCE.getProperty("internetexplorer.properties").split("\\s*,\\s*");
+        String[] options = Configuration.getProperty("internetexplorer.properties").split("\\s*,\\s*");
         for (String option : options) {
             String lineRegex = "([^=]+)=(.+)$";
             Pattern p = Pattern.compile(lineRegex);

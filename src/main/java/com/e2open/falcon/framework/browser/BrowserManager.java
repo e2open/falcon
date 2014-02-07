@@ -64,7 +64,7 @@ public enum BrowserManager {
     }
 
     public BrowserType getDefaultBrowserType() {
-        String browserName = Configuration.INSTANCE.getProperty("browser.type");
+        String browserName = Configuration.getProperty("browser.type");
         BrowserType browserType;
         if(browserName != null) {
             browserType =  BrowserType.valueOf(browserName.toUpperCase());

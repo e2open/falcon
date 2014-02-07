@@ -35,7 +35,7 @@ public class ChromeBrowser extends AbstractBrowser {
 		DesiredCapabilities profile = DesiredCapabilities.chrome();
 		ChromeOptions options = new ChromeOptions();
 		// http://peter.sh/experiments/chromium-command-line-switches/
-		options.addArguments(Configuration.INSTANCE.getProperty("chrome.properties").split("\\s*,\\s*"));
+		options.addArguments(Configuration.getProperty("chrome.properties").split("\\s*,\\s*"));
 		profile.setCapability(ChromeOptions.CAPABILITY, options);
 		profile.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
 		return profile;

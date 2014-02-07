@@ -32,7 +32,7 @@ public abstract class Model {
     }
 
     private UIDStrategy getDefaultStrategy() {
-        String defaultStrategy = Configuration.INSTANCE.getProperty("model.default.uuid.strategy");
+        String defaultStrategy = Configuration.getProperty("model.default.uuid.strategy");
         if (defaultStrategy != null) {
             return UIDStrategy.valueOf(defaultStrategy.toUpperCase());
         } else {
@@ -101,7 +101,7 @@ public abstract class Model {
     }
 
     private static String getNewUUID() {
-        String uuid = Configuration.INSTANCE.getProperty("model.uuid");
+        String uuid = Configuration.getProperty("model.uuid");
         if (StringUtils.isNotBlank(uuid)) {
             return uuid;
         } else {
@@ -118,7 +118,7 @@ public abstract class Model {
             Matcher m = p.matcher(rawValue);
             if (m.find(0)) {
                 String matchedText = m.group(1);
-                String property = Configuration.INSTANCE.getProperty(matchedText);
+                String property = Configuration.getProperty(matchedText);
                 rawValue = rawValue.replace(m.group(0), property);
             }
         }

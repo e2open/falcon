@@ -21,7 +21,7 @@ public class Waiter {
     }
 
     public Waiter() {
-        String waitConfigTimeout = Configuration.INSTANCE.getProperty("wait.timeout");
+        String waitConfigTimeout = Configuration.getProperty("wait.timeout");
         if (StringUtils.isNotBlank(waitConfigTimeout)) waitTimeout = Long.parseLong(waitConfigTimeout);
     }
 

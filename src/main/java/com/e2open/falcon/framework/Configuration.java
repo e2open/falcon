@@ -1,43 +1,29 @@
 package com.e2open.falcon.framework;
 
-import com.e2open.falcon.framework.helpers.FileHelper;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
+import java.util.Properties;
 
-public enum Configuration implements Serializable {
-    INSTANCE;
+public final class Configuration {
+    private static final Properties properties = new Properties();
 
-    private final java.util.Properties properties;
-
-    private Configuration() {
-        properties = new java.util.Properties();
-        loadProperties("global.properties");
-        String localConfiguration = getProperty("local.configuration.file");
+    static {
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        loadPropertiesFromFile(loader, "global.properties");
+        String localConfiguration = properties.getProperty("local.configuration.file");
         if (localConfiguration != null) {
-            loadProperties(localConfiguration);
+            loadPropertiesFromFile(loader, localConfiguration);
         }
     }
 
-    public String getProperty(String name) {
-        return properties.getProperty(name);
-    }
-
-    private void loadProperties(String name) {
+    private static void loadPropertiesFromFile(ClassLoader loader, String fileName) {
         try {
-            File file = getResourceFile(name);
-            FileInputStream in = new FileInputStream(file);
-            properties.load(in);
-            in.close();
+            properties.load(loader.getResourceAsStream(String.format("%s/%s", "configuration", fileName)));
         } catch (IOException e) {
-            throw new RuntimeException("Unable to locate properties file");
+            throw new ExceptionInInitializerError(e);
         }
     }
 
-    private File getResourceFile(String fileName) {
-        String name = String.format("%s/%s", "configuration", fileName);
-        return new File(FileHelper.getResourceFilePath(name));
+    public static String getProperty(String key) {
+        return properties.getProperty(key);
     }
 }
