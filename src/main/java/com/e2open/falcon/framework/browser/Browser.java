@@ -7,8 +7,6 @@ public interface Browser {
 	
 	void close();
 	
-	void maximize();
-	
 	BrowserType getType();
 	
 	WebDriver driver();
