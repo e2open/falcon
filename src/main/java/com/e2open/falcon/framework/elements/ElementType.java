@@ -113,15 +113,15 @@ public enum ElementType {
             return options.get(0);
         }
 
-        public List<String> getValues(WebElement element) {
-            ArrayList<String> values = new ArrayList<String>();
-            List<WebElement> options = element.findElements(By.tagName("option"));
-            for (WebElement option : options) {
-                if (option.isSelected()) {
-                    values.add(option.getText());
+        public Object getAllValues(WebElement element) {
+            Select selectList = new Select(element);
+            Function<WebElement, String> getTextFunctor = new Function<WebElement, String>() {
+                @Override
+                public String apply(WebElement input) {
+                    return input.getText();
                 }
-            }
-            return values;
+            };
+            return Lists.transform(selectList.getAllSelectedOptions(), getTextFunctor);
         }
     };
 
