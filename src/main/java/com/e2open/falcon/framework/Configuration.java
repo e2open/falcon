@@ -15,9 +15,9 @@ public enum Configuration implements Serializable {
     private Configuration() {
         properties = new java.util.Properties();
         loadProperties("global.properties");
-        String stackConfiguration = getProperty("site.configuration.file");
-        if (stackConfiguration != null) {
-            loadProperties(stackConfiguration);
+        String localConfiguration = getProperty("local.configuration.file");
+        if (localConfiguration != null) {
+            loadProperties(localConfiguration);
         }
     }
 
