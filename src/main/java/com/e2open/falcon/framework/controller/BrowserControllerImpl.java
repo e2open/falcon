@@ -129,10 +129,6 @@ public abstract class BrowserControllerImpl implements Controller {
         method.invoke(this, parameters);
     }
 
-    public String errorMessage() {
-        return errorMessage;
-    }
-
     // click and check for POST errors on page
     protected void clickAndCheckForPOSTError(WebElement element) {
         element.click();
