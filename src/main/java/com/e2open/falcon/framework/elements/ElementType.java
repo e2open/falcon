@@ -1,12 +1,10 @@
 package com.e2open.falcon.framework.elements;
 
 import com.e2open.falcon.framework.waiters.Waiter;
-import org.openqa.selenium.By;
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public enum ElementType {
     TEXT {
@@ -109,8 +107,8 @@ public enum ElementType {
 
         @Override
         public String getValue(WebElement element) {
-            List<String> options = getValues(element);
-            return options.get(0);
+            Select selectList = new Select(element);
+            return selectList.getFirstSelectedOption().getText();
         }
 
         public Object getAllValues(WebElement element) {
