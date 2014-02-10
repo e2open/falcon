@@ -10,6 +10,7 @@ Developers:
 
 When running the deploy target, you'll need to add  this to your settings.xml for gitHub authentication:
 
+```xml
 <servers>
   <server>
     <id>github</id>
@@ -17,6 +18,7 @@ When running the deploy target, you'll need to add  this to your settings.xml fo
     <password>GitHubPassw0rd</password>
   </server>
 </servers>
+```
 
 Be sure you check the setting in your POM for the target branch:
  <release.branch.name>mvn-repo-0.1.0.SNAPSHOT</release.branch.name>
