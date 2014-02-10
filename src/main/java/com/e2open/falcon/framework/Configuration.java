@@ -11,6 +11,7 @@ public final class Configuration {
 
     static {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        loadPropertiesFromFile(loader, "default.properties");
         loadPropertiesFromFile(loader, "global.properties");
         String localConfiguration = properties.getProperty("local.configuration.file");
         if (localConfiguration != null) {
