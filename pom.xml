@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!-- Repository Information -->
-    <groupId>com.e2open.falcon.framework</groupId>
+    <groupId>com.e2open.falcon</groupId>
     <artifactId>falcon-framework</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>

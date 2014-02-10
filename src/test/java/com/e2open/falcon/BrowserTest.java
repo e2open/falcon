@@ -1,10 +1,9 @@
 package com.e2open.falcon;
 
-import com.e2open.falcon.framework.Configuration;
-import com.e2open.falcon.framework.browser.Browser;
-import com.e2open.falcon.framework.browser.BrowserManager;
-import com.e2open.falcon.framework.browser.BrowserType;
-import com.e2open.falcon.framework.helpers.FileHelper;
+import com.e2open.falcon.browser.Browser;
+import com.e2open.falcon.browser.BrowserManager;
+import com.e2open.falcon.browser.BrowserType;
+import com.e2open.falcon.helpers.FileHelper;
 import org.junit.After;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;

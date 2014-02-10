@@ -1,6 +1,6 @@
 package com.e2open.falcon;
 
-import com.e2open.falcon.framework.model.Model;
+import com.e2open.falcon.model.Model;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertTrue;
