@@ -4,12 +4,16 @@ import com.e2open.falcon.browser.Browser;
 import com.e2open.falcon.browser.BrowserManager;
 import com.e2open.falcon.browser.BrowserType;
 import com.e2open.falcon.helpers.FileHelper;
+import com.e2open.falcon.runner.OperatingSystem;
+import com.e2open.falcon.runner.TestRunner;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 
 import static junit.framework.TestCase.assertEquals;
 
+@RunWith(TestRunner.class)
 public class BrowserTest {
 
     @After
@@ -23,6 +27,7 @@ public class BrowserTest {
     }
 
     @Test
+    @OperatingSystem("win")
     public void internetExplorer() {
         BrowserManager.INSTANCE.browser(BrowserType.INTERNETEXPLORER);
         openUrl();
@@ -37,6 +42,7 @@ public class BrowserTest {
     }
 
     @Test
+    @OperatingSystem("win")
     public void chrome() {
         BrowserManager.INSTANCE.browser(BrowserType.CHROME);
         openUrl();
