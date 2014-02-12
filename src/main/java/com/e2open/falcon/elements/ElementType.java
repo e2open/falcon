@@ -114,7 +114,7 @@ public enum ElementType {
         public Object getAllValues(WebElement element) {
             Select selectList = new Select(element);
             Function<WebElement, String> getTextFunctor = new Function<WebElement, String>() {
-                @Override
+
                 public String apply(WebElement input) {
                     return input.getText();
                 }
