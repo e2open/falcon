@@ -15,7 +15,7 @@
     <properties>
         <github.global.server>github</github.global.server>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <release.branch.name>mvn-repo-0.1.0.TEST</release.branch.name>
+        <release.branch.name>mvn-repo-0.1.0.SNAPSHOT</release.branch.name>
     </properties>
 
     <distributionManagement>
