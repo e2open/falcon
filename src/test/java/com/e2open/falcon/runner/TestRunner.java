@@ -28,7 +28,7 @@ public class TestRunner extends BlockJUnit4ClassRunner {
             final OperatingSystem customAnnotation = method.getAnnotation(OperatingSystem.class);
             if (customAnnotation != null) {
                 String expectedOS = customAnnotation.value();
-                if (OS.indexOf(expectedOS) >= 0) filteredMethods.add(method);
+                if (OS.toLowerCase().indexOf(expectedOS) >= 0) filteredMethods.add(method);
             } else {
                 filteredMethods.add(method);
             }
